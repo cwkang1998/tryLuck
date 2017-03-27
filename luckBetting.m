@@ -89,7 +89,8 @@ function[playAgain] = game()
 	%Create middle deck which contains computer's no.
 	text(14.5, 19.25,'@');
 	rectangle('Position', [13.25 15.25 3.5 7]);
-    
+	
+	%Generate computer's number
 	c_number=randi(20+(d*10)); 
 
 end
