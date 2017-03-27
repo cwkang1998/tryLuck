@@ -12,25 +12,28 @@ function main()
 	clc,clf;
 	hold off;
 	axis off;
-	%initializing the difficulity lv to easy
-	diffLv = 0;
+	%initializing the loop condition
+	gameRun = 1;
 	%initializing the play condition
-	playAgn = 1;
+	life = 3;
+	score = 0;
 	
 	%Goes to the menu
 	%Exit loop when x is pressed or when user does not want to play anymore
 	
-	while(playAgn)
+	while(gameRun)
 		choice = menu('<Shooting Star>', 'Start Game', 'Instructions', 'Highscore');
         switch(choice)
 		case 1
-			playAgn = game();
+			while(life>0)
+				[life,score] = game(life,score);
+			end			
 		case 2
 			instruction();
 		case 3
 			highScore();
         otherwise
-            playAgn = 0;
+            gameRun = 0;
         end
 	end
 end
@@ -41,7 +44,7 @@ function instruction()
 	'You are given a set number of cards which contains number between 1-10.',
 	'You start with 3 lifes.',
 	'You are allowed to choose between revealing a card''s number or giving up each round.',
-	'If you give up, no life will be lost no matter the circumstances.',
+	'If you forfiet, no life will be lost no matter the circumstances.',
 	'If you reveal all the cards but the total sum is less than the generated number, you lose a life.',
 	'You lose the game when you lost all your lifes!'},'Instructions','modal');
 	return;
@@ -61,38 +64,64 @@ function[lv] = difficulity()
 end
 
 %Main game
-function[playAgain] = game()
+function[life, score] = game(life, score)
+	%initialise difficulity
 	d = difficulity();
-	clf;
-    
-	%Card animation
-    x=13.25;
-    y=13.25;
 	figure('Name', 'Try Your Luck!', 'MenuBar', 'none');
-	set(gca,'xticklabel',{[]});
-	set(gca,'yticklabel',{[]});
-    for i=0:10
+	
+	%Animation
+    for i=0:27
         clf;
-        axis([0,30,0,35]);
-		axis off;
-        rectangle('Position', [x-i y-i 3.5 7]);%coordinate(3.25,3.25)
-        rectangle('Position', [x+i y-i 3.5 7]);%coordinate(23.25,3.25)
+        axis([0,30,0,30]);
+		set(gca,'xticklabel',{[]});
+		set(gca,'yticklabel',{[]});
+        rectangle('Position', [7 30-i 3.5 7]);
+        rectangle('Position', [11 30-i 3.5 7]);
         if(d>0)
-			rectangle('Position', [x-i y+i 3.5 7]);%coordinate(3.25,23.25)
+        rectangle('Position', [15 30-i 3.5 7]);
         end
         if(d==2)  
-			rectangle('Position', [x+i y+i 3.5 7]);%coordinate(23.25,23.25)
+			rectangle('Position', [19 30-i 3.5 7]);
         end
         pause(1/60);
     end
 	
-	%Create middle deck which contains computer's no.
-	text(14.5, 19.25,'@');
-	rectangle('Position', [13.25 15.25 3.5 7]);
+    %Show two options
+	text(6, 20,'Reveal A Card');
+	text(19.25, 20,'Forfeit Match');
+	rectangle('Position', [5 17.25 7 5]);
+	rectangle('Position', [18 17.25 7 5]);
 	
-	%Generate computer's number
+	%Generate random computer's number
 	c_number=randi(20+(d*10)); 
+	
+	%Generate random number for player
+	for(i=1:(d+2))
+		u_cardNumber(i) = randi(10);
+	end
+	
+	%Initialise coordinates for the numbers to appear
+	coor = [8.5 12.5 16.5 20.5];
+  
+	%Prompts the user to click on a card.
+	title(gca,'Click reveal to reveal a card''s number.');
 
+	%Accept mouse click as input to determine the user's action
+	a = 1;
+	shown = 0;
+	while shown<4
+		[x,y]=ginput(1);
+		if(x>5&&x<12&&y>17.25&&y<22.25)
+			pause(1);
+			text(coor(a), 6.5,sprintf('%d',u_cardNumber(a)));
+			a = a + 1;
+			shown = shown + 1;
+		end
+		if(x>18&&x<25&&y>17.25&&y<22.25)
+			isForfeit = 1;
+			break;
+		end
+	end
 end
 
 %Show game over dialog box
