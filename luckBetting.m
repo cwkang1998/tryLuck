@@ -30,7 +30,10 @@ function main()
 			while(life>0)
 				[life,score] = game(life,score,lv);
 			end
-			
+			%Only runs if player loses the game
+			if(life<0)
+				gameOver();
+			end			
 		case 2
 			instructions();
 		case 3
