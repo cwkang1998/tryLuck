@@ -108,7 +108,9 @@ function[life, score] = game(life, score, lv)
 	text(6,29,sprintf('Score : %d',score));
 	
 	%Generate random computer's number
-	c_number=randi(20+(lv*10)); 
+    for(i=1:(lv+2))
+		c_number(i) = randi(10);
+	end
 	
 	%Generate random number for player
 	for(i=1:(lv+2))
@@ -155,15 +157,18 @@ function[life, score] = game(life, score, lv)
 	end
 	%Reveal computer's number
 	pause(1);
-	title(gca, sprintf('The computer''s number is : %d !', c_number));
+	title(gca, sprintf('The computer''s number is : %d !', sum(c_number)));
 	pause(2);
 	%Check scoring condition
 	if(shown==2+lv)
-		if(sum(u_cardNumber)>=c_number)
-			title(gca, sprintf('Congratz!!! Your total sum of numbers (%d) is larger than computer''s number (%d) !',sum(u_cardNumber),c_number));
+		if(sum(u_cardNumber)>sum(c_number))
+			title(gca, sprintf('Congratz!!! Your total sum of numbers (%d) is larger than computer''s number (%d) !',sum(u_cardNumber),sum(c_number)));
 			score = score + 100;
-		else
-			title(gca, sprintf('Too bad, Your total sum of numbers (%d) is smaller than computer''s number (%d) !',sum(u_cardNumber),c_number));
+        elseif(sum(u_cardNumber)==sum(c_number))
+			title(gca, sprintf('Its a draw! Your total sum of numbers (%d) is equals to the computer''s number (%d) !',sum(u_cardNumber),sum(c_number)));
+			score = score + 100;
+        else
+			title(gca, sprintf('Too bad, Your total sum of numbers (%d) is smaller than computer''s number (%d) !',sum(u_cardNumber),sum(c_number)));
 			life = life - 1;
 		end
 	end
