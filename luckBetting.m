@@ -3,6 +3,10 @@
 %Start 27/3/2017
 %Try Your Luck game
 
+%to be added:
+%Interactive computer
+%better life and score system(credit system adviced)
+
 %Main function
 function main()
     %Reset the layout
