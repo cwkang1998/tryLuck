@@ -19,7 +19,7 @@ function main()
 	%Exit loop when x is pressed or when user does not want to play anymore
 	
 	while(gameRun)
-		choice = menu('<Shooting Star>', 'Start Game', 'Instructions', 'Highscore');
+		choice = menu('<Try Your Luck!>', 'Start Game', 'Instructions', 'Highscore');
         switch(choice)
 		case 1
 			%check and initialise for difficulity settings
@@ -66,7 +66,7 @@ function[lv] = difficulity()
 		case 3
 			lv = 2;
 		otherwise
-			return;
+			lv = -1;
     end
 end
 
@@ -74,7 +74,7 @@ end
 function[life, score] = game(life, score, lv)
 	figure('Name', 'Try Your Luck!', 'MenuBar', 'none');
 	%Animation
-    for i=0:27
+    for i=0:28
         clf;
         axis([0,30,0,30]);
 		set(gca,'xticklabel',{[]});
@@ -95,16 +95,17 @@ function[life, score] = game(life, score, lv)
 	pause(1);
 	
     %Show two options
-	text(6, 20,'Reveal A Card');
-	rectangle('Position', [5 17.25 7 5]);
-	text(19.25, 20,'Forfeit Match');
-	rectangle('Position', [18 17.25 7 5]);
+	text(5.75, 14,'Reveal A Card');
+	rectangle('Position', [5 13.25 7 1.5]);
+	text(19, 14,'Forfeit Match');
+	rectangle('Position', [18 13.25 7 1.5]);
 	text(28, 29,'Exit');
 	rectangle('Position', [27.75 28.5 2 1]);
 	
 	%Show player's life and score
 	text(2,29,sprintf('Life : %d',life));
-	text(2,27,sprintf('Score : %d',score));
+    text(5,29,' | ');
+	text(6,29,sprintf('Score : %d',score));
 	
 	%Generate random computer's number
 	c_number=randi(20+(lv*10)); 
@@ -124,7 +125,7 @@ function[life, score] = game(life, score, lv)
 		%Prompts the user to click on a card.
 		title(gca,'Click reveal to reveal a card''s number.');
 		[x,y]=ginput(1);
-		if(x>5&&x<12&&y>17.25&&y<22.25)
+		if(x>5&&x<12&&y>13.25&&y<14.75)
 			title(gca,'Your card number is...');
 			pause(1);
 			text(coor(a), 6.5,sprintf('%d',u_cardNumber(a)));
@@ -133,7 +134,7 @@ function[life, score] = game(life, score, lv)
 			a = a + 1;
 			shown = shown + 1;
 		end
-		if(x>18&&x<25&&y>17.25&&y<22.25)
+		if(x>18&&x<25&&y>13.25&&y<14.75)
 			title(gca,'Player forfieted the match :(');
 			%Show all card on hand
 			while(a<=2+lv)
