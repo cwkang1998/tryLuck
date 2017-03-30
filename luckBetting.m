@@ -3,6 +3,9 @@
 %Start 27/3/2017
 %Try Your Luck game
 
+%duel system
+%life reduction system
+
 %Main function
 function main()
     %Reset the layout
@@ -19,7 +22,7 @@ function main()
 	%Exit loop when x is pressed or when user does not want to play anymore
 	
 	while(gameRun)
-		choice = menu('<Shooting Star>', 'Start Game', 'Instructions', 'Highscore');
+		choice = menu('<Try Your Luck!>', 'Start Game', 'Instructions', 'Highscore');
         switch(choice)
 		case 1
 			%check and initialise for difficulity settings
@@ -31,8 +34,8 @@ function main()
 				[life,score] = game(life,score,lv);
 			end
 			%Only runs if player loses the game
-			if(life<0)
-				gameOver();
+			if(life==0)
+				gameOver(score);
 			end			
 		case 2
 			instructions();
@@ -49,8 +52,9 @@ function instructions()
 	msgbox({'A random number will be drawn by the computer.',
 	'You are given a set number of cards which contains number between 1-10.',
 	'You start with 3 lifes.',
-	'You are allowed to choose between revealing a card''s number or giving up each round.',
+	'You are given a choice to reveal a card''s number or forfieting each round.',
 	'If you forfiet, no life will be lost no matter the circumstances.',
+	'If you reveal all the cards and the total sum is more than the generated number, you gain 100 points.',
 	'If you reveal all the cards but the total sum is less than the generated number, you lose a life.',
 	'You lose the game when you lost all your lifes!'},'Instructions','modal');
 end
