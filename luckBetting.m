@@ -14,14 +14,15 @@ function main()
     clear all;
 	%initializing the loop condition
 	gameRun = 1;
-	%initializing the play condition
-	life = 3;
-	score = 0;
-	lv = -1;
 	
 	%Goes to the menu
 	%Exit loop when x is pressed or when user does not want to play anymore
 	while(gameRun)
+        %initializing the play condition
+        life = 3;
+        score = 0;
+        lv = -1;
+        %Open up gui 
 		choice = menu('<Try Your Luck!>', 'Start Game', 'Instructions', 'Highscore');
         switch(choice)
 		case 1
@@ -184,7 +185,7 @@ function[life, score] = game(life, score, lv)
 			title(gca,'Click Exit once more to confirm exit!');
 			[x, y] = ginput(1);
 			if(x>27.75&&x<29.75&&y>28.5&&y<29.5)
-				life = 0;
+				life = -1;
 				close all;
 				return;
 			end
