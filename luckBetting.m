@@ -21,7 +21,6 @@ function main()
 	
 	%Goes to the menu
 	%Exit loop when x is pressed or when user does not want to play anymore
-	
 	while(gameRun)
 		choice = menu('<Try Your Luck!>', 'Start Game', 'Instructions', 'Highscore');
         switch(choice)
@@ -78,7 +77,7 @@ end
 %Main game
 function[life, score] = game(life, score, lv)
 	figure('Name', 'Try Your Luck!', 'MenuBar', 'none');
-	%Animation
+	%Animation for the  your cards
     for i=0:28
         clf;
         axis([0,30,0,30]);
@@ -95,9 +94,40 @@ function[life, score] = game(life, score, lv)
         pause(1/60);
     end
 	
+	%Animation for the computer's cards
+    for i=0:28
+        clf;
+        axis([0,30,0,30]);
+		set(gca,'xticklabel',{[]});
+		set(gca,'yticklabel',{[]});
+		%redrawing your cards
+		rectangle('Position', [7 2 3.5 7]);
+        rectangle('Position', [11 2 3.5 7]);
+        if(lv>0)
+			rectangle('Position', [15 2 3.5 7]);
+        end
+        if(lv==2)  
+			rectangle('Position', [19 2 3.5 7]);
+        end
+		%drawing computer cards
+        rectangle('Position', [7 47-i 3.5 7]);
+        rectangle('Position', [11 47-i 3.5 7]);
+        if(lv>0)
+			rectangle('Position', [15 47-i 3.5 7]);
+        end
+        if(lv==2)  
+			rectangle('Position', [19 47-i 3.5 7]);
+        end
+        pause(1/60);
+    end
+	
 	%Game Start Prompt
 	title(gca,'Game Start! xD');
 	pause(1);
+	
+	%Card label
+	text(1, 5,'Your Cards :');
+	text(1, 23,sprintf('Computer''s \n Cards :'));
 	
     %Show two options
 	text(5.75, 14,'Reveal A Card');
