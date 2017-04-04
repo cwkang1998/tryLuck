@@ -158,11 +158,11 @@ function[life, score] = game(life, score, lv)
 	text(1, 23,sprintf('Computer''s \n Cards :'));
 	
     %Draw the buttons(options) that are clickable
-	rectangle('Position', [5 13.25 7 1.5],'FaceColor',[1 0.95 0.5]);
+	rectangle('Position', [5 13.25 7 1.5],'FaceColor',[1 0.95 0.8]);
 	text(5.75, 14,'Reveal A Card');
-	rectangle('Position', [18 13.25 7 1.5],'FaceColor',[1 0.95 0.5]);
+	rectangle('Position', [18 13.25 7 1.5],'FaceColor',[1 0.95 0.8]);
 	text(19, 14,'Forfeit Match');
-	rectangle('Position', [27.75 28.5 2 1],'FaceColor',[1 0.95 0.5]);
+	rectangle('Position', [27.75 28.5 2 1],'FaceColor',[1 0.95 0.8]);
 	text(28, 29,'Exit');
 	
 	%Show player's life and score
