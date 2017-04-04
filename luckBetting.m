@@ -3,10 +3,9 @@
 %Start 27/3/2017
 %Try Your Luck game
 
-%to be added:
-%better life and score system(credit system adviced)
 
 %Main function
+%This function is the main function that runs and calls all the other functions
 function main()
     %Close all unneeded windows and clear all data
     close all;
@@ -42,13 +41,11 @@ function main()
 		case 2
 			%Opens the instructions dialog that only returns to the main menu
 			%after any button is pressed
-			h = instructions();
-			uiwait(h);
+			instructions();
 		case 3
 			%Opens the highScore dialog that only returns to the main menu
 			%after any button is pressed
-			h = highScore();
-			uiwait(h);
+			highScore();
         otherwise
 			%Exits the game when the 'x' button is pressed
             gameRun = 0;
@@ -58,14 +55,17 @@ end
 
 %Shows the instructions for the game
 function instructions()
-	msgbox({'A random number will be drawn by the computer.',
-	'You are given a set number of cards which contains number between 1-10.',
+	h = msgbox({'A random number will be drawn by the computer.',
+	'You and the computer are given a set number of cards which contains number between 1-10.',
 	'You start with 3 lifes.',
 	'You are given a choice to reveal a card''s number or forfieting each round.',
+	'When you reveal a card, the computer will also reveal a card.',
 	'If you forfiet, no life will be lost no matter the circumstances.',
-	'If you reveal all the cards and the total sum is more than the generated number, you gain 100 points.',
-	'If you reveal all the cards but the total sum is less than the generated number, you lose a life.',
+	'If you reveal all the cards and your total sum is more than the computer''s total sum, you gain 100 points.',
+	'If you reveal all the cards but the total sum is less than the computer''s total sum, you lose a life.',
 	'You lose the game when you lost all your lifes!'},'Instructions','modal');
+	%Waits for the player to press any button
+	uiwait(h);
 end
 
 %Set the difficulity via the manipulation of the number of cards that exist
@@ -104,12 +104,14 @@ function[life, score] = game(life, score, lv)
 		%Draws the players card
         rectangle('Position', [7 30-i 3.5 7]);
         rectangle('Position', [11 30-i 3.5 7]);
+		%depending on the difficulity lv the other 2 cards might or might not be drawn
         if(lv>0)
 			rectangle('Position', [15 30-i 3.5 7]);
         end
         if(lv==2)  
 			rectangle('Position', [19 30-i 3.5 7]);
         end
+		%Create a animation that is 60 fps using pause function
         pause(1/60);
     end
 	
@@ -122,6 +124,7 @@ function[life, score] = game(life, score, lv)
 		%redrawing players cards
 		rectangle('Position', [7 2 3.5 7]);
         rectangle('Position', [11 2 3.5 7]);
+		%depending on the difficulity lv the other 2 cards might or might not be drawn
         if(lv>0)
 			rectangle('Position', [15 2 3.5 7]);
         end
@@ -131,12 +134,14 @@ function[life, score] = game(life, score, lv)
 		%drawing computer cards
         rectangle('Position', [7 39-i 3.5 7]);
         rectangle('Position', [11 39-i 3.5 7]);
+		%depending on the difficulity lv the other 2 cards might or might not be drawn
         if(lv>0)
 			rectangle('Position', [15 39-i 3.5 7]);
         end
         if(lv==2)  
 			rectangle('Position', [19 39-i 3.5 7]);
         end
+		%Create a animation that is 60 fps using pause function
         pause(1/60);
     end
 	
@@ -144,11 +149,11 @@ function[life, score] = game(life, score, lv)
 	title(gca,'Game Start! xD');
 	pause(1);
 	
-	%Card label
+	%Card label to show which side is the player's card
 	text(1, 5,'Your Cards :');
 	text(1, 23,sprintf('Computer''s \n Cards :'));
 	
-    %Show two options
+    %Draw the buttons(options) that are clickable
 	text(5.75, 14,'Reveal A Card');
 	rectangle('Position', [5 13.25 7 1.5]);
 	text(19, 14,'Forfeit Match');
@@ -161,17 +166,17 @@ function[life, score] = game(life, score, lv)
     text(5,29,' | ');
 	text(6,29,sprintf('Score : %d',score));
 	
-	%Generate random computer's number
+	%Generate random card number for computer
     for(i=1:(lv+2))
 		c_number(i) = randi(10);
 	end
 	
-	%Generate random number for player
+	%Generate random card number for player
 	for(i=1:(lv+2))
 		u_cardNumber(i) = randi(10);
 	end
 	
-	%Initialise coordinates for the numbers to appear
+	%Initialise coordinates for the numbers to appear on the cards
 	coor = [8.5 12.5 16.5 20.5];
 
 	%variable 'a' counts the iteration to make sure the coordinate moves
@@ -223,13 +228,14 @@ function[life, score] = game(life, score, lv)
 			end
 		end
 	end
-	%Reveal computer's number
+	%Show the total of player's number and the total of computer's number
 	pause(1);
 	title(gca, sprintf('The player''s total number is : %d !', sum(u_cardNumber)));
 	pause(1.5);
 	title(gca, sprintf('The computer''s total number is : %d !', sum(c_number)));
 	pause(1.5);
 	%Check scoring condition by looking at the sum of both parties
+	%Show msg to notify if they won or lost
 	if(shown==2+lv)
 		if(sum(u_cardNumber)>sum(c_number))
 			title(gca, sprintf('Congratz!!! Your total sum of numbers (%d) is larger than computer''s number (%d) !',sum(u_cardNumber),sum(c_number)));
@@ -242,7 +248,9 @@ function[life, score] = game(life, score, lv)
 			life = life - 1;
 		end
 	end
-	pause(3);
+	%Wait a few seconds before going into the next game
+	pause(2.5);
+	%Close all remaining windows
 	close all;
 end
 
@@ -267,7 +275,9 @@ end
 function highScore()
 	%Call the fileRead function to read the previous highscore
 	[name,score] = fileRead();
-	msgbox(sprintf('Highscore:\n%s\n%d',name,score),'Highscore','modal');
+	h = msgbox(sprintf('Highscore:\n%s\n%d',name,score),'Highscore','modal');
+	%Wait until player presses some button
+	uiwait(h);
 end
 
 %Reads the old highScore
@@ -291,10 +301,13 @@ end
 
 %Saves the new highScore
 function fileSave(name, new_highScore)
+	%Open the files for writing
 	nameFile = fopen('name','w');
 	scoreFile = fopen('score','w');
+	%Write the files
 	fprintf(nameFile, '%s', name);
 	fprintf(scoreFile, '%d', new_highScore);
+	%Closing the files
 	fclose(nameFile);
 	fclose(scoreFile);
 end
