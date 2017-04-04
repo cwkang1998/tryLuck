@@ -1,8 +1,12 @@
 %Sc. Computing Assignment 2 QUESTION 2
 %Chen Wen Kang
 %Start 27/3/2017
-%Try Your Luck game
 
+%Try Your Luck game
+%A card game that is derived from blackjack but is relatively simpler.
+%It involves a human playing against a computer with a random hand of cards with number from 1-10
+%attempting to prevent the lost of lives while trying to make sure your hand have a
+%higher total sum than the computer's hand.
 
 %Main function
 %This function is the main function that runs and calls all the other functions
