@@ -261,7 +261,7 @@ end
 %Show game over dialog box
 function gameOver(score)
 	%Show player's total score
-	h = msgbox(sprintf('Game Over!!!\n Your Highscore is %d!',score),'Game Over','modal');
+	h = msgbox(sprintf('Game Over!!!\n Your score is %d!',score),'Game Over','modal');
 	uiwait(h);
 	%Call fileRead function to read the previous highscore if there are any
 	[old_name, old_score] = fileRead();
