@@ -261,13 +261,15 @@ end
 %Show game over dialog box
 function gameOver(score)
 	%Show player's total score
-	msgbox(sprintf('Game Over!!!\n Your Highscore is %d!',score),'Game Over','modal');
+	h = msgbox(sprintf('Game Over!!!\n Your Highscore is %d!',score),'Game Over','modal');
+	uiwait(h);
 	%Call fileRead function to read the previous highscore if there are any
 	[old_name, old_score] = fileRead();
 	%if a new highscore is obtained then prompt the player for their name
 	%and save their data into the files by calling the fileSave function
 	if(score>old_score)
-		warndlg('You have obtained a new highscore!','New Highscore','modal');
+		h = warndlg('You have obtained a new highscore!','New Highscore','modal');
+		uiwait(h);
 		name = cell2mat(inputdlg('Enter your name : ','New Highscore!',1));
 		fileSave(name, score);
 	end
